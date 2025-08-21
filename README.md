@@ -24,7 +24,7 @@ L’idée est simple :
 - Vous lancez l’audioguide, qui vous explique pas à pas ce que vous voyez.  
 - Vous assistez à des démos de **programmes** : allumer une LED, jouer un son, contrôler une matrice lumineuse, créer une petite animation, etc.  
 
-Chaque chapitre associe une **explication audio** et une **démonstration**, afin de montrer les possibilités offertes par le module d’électronique embarquée ESP32.
+Chaque chapitre associe une **explication audio** et une **démonstration**, afin de montrer les possibilités offertes par le module d’électronique embarquée ESP32. Vous êtes complétement libres de démonter, remonter, programmer le module fourni. C'est même recommandé: c'est comme ça qu'on apprend !
 
 ---
 
