@@ -1,6 +1,19 @@
 # ESPY-Robotics
 
-Bienvenue dans **ESPY-l’audioguide**, un projet conçu pour vous familiariser avec l’électronique et la robotique à travers des **exemples concrets** et des **démos interactives**.  
+
+<table>
+  <tr>
+    <td style="padding-right:20px; vertical-align:middle;">
+      <b>Bienvenue à <i>ESPY-lrobotics</i></b>, un projet conçu pour vous familiariser avec l’électronique et la robotique à travers des exemples concrets et des démos interactives.
+    </td>
+    <td style="vertical-align:middle;">
+      <img src="https://github.com/FYCodeLab/espy-robotics/blob/main/assets/espysmall.png?raw=true" width="200">
+    </td>
+  </tr>
+</table>
+
+
+
 
 ---
 
