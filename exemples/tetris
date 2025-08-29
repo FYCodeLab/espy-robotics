@@ -1,0 +1,249 @@
+# code.py — TETRIS 8×8 (ESP32-S3 Matrix + IMU QMI8658C)
+# Contrôles :
+#  - Inclinaison X : gauche / droite
+#  - Petit tapotement : rotation
+#  - Fin de partie : affichage du score, puis attente d’un GROS tapotement pour rejouer
+#
+# Pour débutants :
+#  - Réglez les seuils : TILT_THRESH (inclinaison), TAP_THRESH (tap), RESTART_THRESH (grosse tape)
+#  - Brightness basse = couleurs propres (0.05–0.12)
+#
+# Prérequis /lib :
+#   - adafruit_pixel_framebuf
+#   - qmi8658c
+
+import time, math, random
+import board, busio, neopixel
+from adafruit_pixel_framebuf import PixelFramebuffer, VERTICAL
+import qmi8658c
+
+# ───────── Matrice 8×8 ─────────
+W = H = 8
+BRIGHT = 0.10
+pixels = neopixel.NeoPixel(
+    board.NEOPIXEL, W*H,
+    brightness=BRIGHT, auto_write=False,
+    pixel_order=neopixel.GRB  # passez en RGB si couleurs inversées
+)
+fb = PixelFramebuffer(
+    pixels, W, H,
+    orientation=VERTICAL, alternating=False,
+    reverse_x=False, reverse_y=True
+)
+
+# ───────── Couleurs ─────────
+BLACK = 0x000000
+WHITE = 0xFFFFFF
+COLORS = [0xFF0000, 0xFF7F00, 0xFFFF00, 0x00FF00, 0x0000FF, 0x4B0082, 0x9400D3]
+
+# ───────── IMU (tilt / tap) ─────────
+i2c = busio.I2C(board.IMU_SCL, board.IMU_SDA)
+imu = qmi8658c.QMI8658C(i2c)
+
+TILT_THRESH     = 2.0   # inclinaison minimale (m/s²) pour bouger en latéral
+HORIZ_DELAY_MS  = 170   # anti-répétition déplacement latéral
+TAP_THRESH      = 3.6   # petit tapotement → rotation
+TAP_DELAY_MS    = 280   # anti-rebond rotation
+RESTART_THRESH  = 6.0   # grosse tape (|g-9.8| > seuil) → rejouer
+
+BASE_DROP_MS    = 900   # gravité de base (ms)
+DROP_MIN_MS     = 350   # chute minimale (accélère avec le score)
+
+# ───────── Police 3×5 pour le score ─────────
+DIGITS = {
+    "0":[0b111,0b101,0b101,0b101,0b111],"1":[0b010,0b110,0b010,0b010,0b111],
+    "2":[0b111,0b001,0b111,0b100,0b111],"3":[0b111,0b001,0b111,0b001,0b111],
+    "4":[0b101,0b101,0b111,0b001,0b001],"5":[0b111,0b100,0b111,0b001,0b111],
+    "6":[0b111,0b100,0b111,0b101,0b111],"7":[0b111,0b001,0b010,0b010,0b010],
+    "8":[0b111,0b101,0b111,0b101,0b111],"9":[0b111,0b101,0b111,0b001,0b111]
+}
+def draw_digit(ch, x0, y0, col=WHITE):
+    g = DIGITS.get(ch); 
+    if not g: return
+    for y in range(5):
+        row = g[y]
+        for x in range(3):
+            if row & (1<<x):
+                fb.pixel(x0+x, y0+y, col)
+
+def show_score(score, hold=1.8):
+    s = f"{min(99,score):02d}"
+    fb.fill(BLACK)
+    draw_digit(s[0], 0, 1, WHITE)
+    draw_digit(s[1], 4, 1, WHITE)
+    fb.display()
+    t_end = time.monotonic() + hold
+    while time.monotonic() < t_end:
+        time.sleep(0.02)
+
+# ───────── Pièces 3×3 (adaptées au 8×8) ─────────
+SHAPES = (
+    ((1,1,1),(0,0,0),(0,0,0)),            # barre (3)
+    ((1,1,1),(0,1,0),(0,0,0)),            # T
+    ((1,1,0),(0,1,1),(0,0,0)),            # S
+    ((1,0,0),(1,1,1),(0,0,0)),            # J
+    ((1,1,0),(1,1,0),(0,0,0)),            # carré 2x2 + extension
+    ((0,1,1),(1,1,0),(0,0,0)),            # Z
+    ((0,0,1),(1,1,1),(0,0,0)),            # L
+)
+
+# ───────── Utilitaires Tetris ─────────
+def new_board():
+    return [[0]*W for _ in range(H)]
+
+def can_move(board, piece, px, py):
+    for r in range(3):
+        for c in range(3):
+            if piece[r][c]:
+                x, y = px+c, py+r
+                if x < 0 or x >= W or y >= H:       # hors cadre bas/lats
+                    return False
+                if y >= 0 and board[y][x]:          # collision cases déjà posées
+                    return False
+    return True
+
+def rotate(piece):
+    return tuple(tuple(piece[2-c][r] for c in range(3)) for r in range(3))
+
+def merge(board, piece, px, py, col):
+    for r in range(3):
+        for c in range(3):
+            if piece[r][c]:
+                x, y = px+c, py+r
+                if 0 <= x < W and 0 <= y < H:
+                    board[y][x] = col
+
+def clear_lines(board):
+    new = [row for row in board if not all(row)]
+    cleared = H - len(new)
+    if cleared:
+        board[:] = [[0]*W for _ in range(cleared)] + new
+    return cleared
+
+def draw(board, piece, px, py, col):
+    fb.fill(BLACK)
+    # fond
+    for y in range(H):
+        for x in range(W):
+            if board[y][x]:
+                fb.pixel(x, y, board[y][x])
+    # pièce
+    for r in range(3):
+        for c in range(3):
+            if piece[r][c]:
+                x, y = px+c, py+r
+                if 0 <= x < W and 0 <= y < H:
+                    fb.pixel(x, y, col)
+    fb.display()
+
+# ───────── Gestes IMU ─────────
+def read_accel():
+    try:
+        return imu.acceleration  # (ax, ay, az) en m/s²
+    except Exception:
+        return (0.0, 0.0, 9.8)
+
+def small_tap(now_ms, last_tap_ms):
+    ax, ay, az = read_accel()
+    g = math.sqrt(ax*ax + ay*ay + az*az)
+    if abs(g - 9.8) > TAP_THRESH and (now_ms - last_tap_ms) > TAP_DELAY_MS:
+        return True
+    return False
+
+def big_tap():
+    ax, ay, az = read_accel()
+    g = math.sqrt(ax*ax + ay*ay + az*az)
+    return abs(g - 9.8) > RESTART_THRESH
+
+# ───────── Une partie complète ─────────
+def play_once():
+    board = new_board()
+    score = 0
+
+    # première pièce
+    idx = random.randrange(len(SHAPES))
+    piece = SHAPES[idx]
+    color = COLORS[idx]
+    px, py = W//2 - 1, 0
+
+    last_drop = time.monotonic()*1000.0
+    last_move = 0.0
+    last_tap  = 0.0
+    drop_ms = BASE_DROP_MS
+
+    # petit flash de démarrage
+    fb.fill(0x202020); fb.display(); time.sleep(0.18)
+    fb.fill(BLACK);     fb.display()
+
+    while True:
+        now_ms = time.monotonic()*1000.0
+        ax, ay, _ = read_accel()
+
+        # Mouvement latéral (tilt X) avec anti-répétition
+        if now_ms - last_move > HORIZ_DELAY_MS:
+            if ax > TILT_THRESH and can_move(board, piece, px+1, py):
+                px += 1; last_move = now_ms
+            elif ax < -TILT_THRESH and can_move(board, piece, px-1, py):
+                px -= 1; last_move = now_ms
+
+        # Rotation (petit tapotement)
+        if small_tap(now_ms, last_tap):
+            cand = rotate(piece)
+            if can_move(board, cand, px, py):
+                piece = cand
+            last_tap = now_ms
+
+        # Gravité
+        if now_ms - last_drop >= drop_ms:
+            if can_move(board, piece, px, py+1):
+                py += 1
+            else:
+                # on pose la pièce
+                merge(board, piece, px, py, color)
+                cleared = clear_lines(board)
+                if cleared:
+                    score += cleared
+                    # accélération douce quand on score
+                    drop_ms = max(DROP_MIN_MS, drop_ms - cleared*60)
+
+                # nouvelle pièce
+                idx = random.randrange(len(SHAPES))
+                piece = SHAPES[idx]
+                color = COLORS[idx]
+                px, py = W//2 - 1, 0
+                # collision immédiate → game over
+                if not can_move(board, piece, px, py):
+                    break
+            last_drop = now_ms
+
+        draw(board, piece, px, py, color)
+        time.sleep(0.02)
+
+    return score
+
+def wait_restart(score):
+    # Affiche le score
+    show_score(score, hold=1.2)
+    # Attente d’une grosse tape pour relancer (avec petite respiration visuelle)
+    phase = 0.0
+    while True:
+        if big_tap():
+            fb.fill(WHITE); fb.display(); time.sleep(0.08)
+            fb.fill(BLACK); fb.display()
+            return
+        # respiration
+        val = int((math.sin(phase)*0.5+0.5)*35)+10
+        fb.fill((val,val,val)); fb.display()
+        time.sleep(0.06)
+        fb.fill(BLACK); fb.display()
+        time.sleep(0.04)
+        phase += 0.25
+
+# ───────── Boucle principale ─────────
+try:
+    while True:
+        sc = play_once()
+        wait_restart(sc)
+except KeyboardInterrupt:
+    fb.fill(BLACK); fb.display()
+    raise
