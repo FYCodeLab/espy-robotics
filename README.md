@@ -1,8 +1,13 @@
 # ESPY-Robotics
 
+
 <p align="center">
-  <img src="https://github.com/FYCodeLab/espy-robotics/blob/main/assets/espy%20kits.jpg?raw=true" width="800">
+  <a href="https://github.com/FYCodeLab/espy-robotics/edit/main/README.md">
+    <img src="https://raw.githubusercontent.com/FYCodeLab/espy-robotics/main/assets/espy%20kits.jpg" width="800">
+  </a>
 </p>
+
+
 <table>
   <tr>
     <td style="padding-right:20px; vertical-align:middle;">
@@ -39,12 +44,33 @@ Chaque chapitre associe une **explication audio** et une **démonstration**, afi
 
 ---
 
-## 📂 Organisation des chapitres
+## 📂 Audioguide
 
 Chaque chapitre est composé de :  
 - Un **audio** d’explications  
 - Un extrait de **script Python**  
 - Une **démonstration** (ex. matrice LED...)  
+
+---
+## 💡 Exemples de programmes
+
+Une fois l’ESPY branché et l’audioguide lancé, vous pouvez explorer une série de programmes déjà prêts à l’emploi.  
+Ils montrent progressivement les possibilités du microcontrôleur ESP32 et servent de base pour vos propres créations.
+
+- **Matrice LED** : animations colorées (arc-en-ciel, plasma, comète, étincelles, ondes, tourbillon) sur l’afficheur 8×8.  
+- **Dé électronique** : secouez la carte pour lancer un dé virtuel, avec une animation et un résultat aléatoire de 1 à 6.  
+- **Message défilant** : affichez un texte qui défile sur la matrice lumineuse, personnalisable en vitesse et couleur.  
+- **Jeux (Snake, Tetris, Pong)** : contrôlez de petits jeux classiques grâce à l’accéléromètre intégré.  
+- **Horloge** : connectée au Wi-Fi, elle affiche l’heure locale sur la matrice LED en alternant heures et minutes.  
+- **Station météo** : récupère en temps réel la température et l’état du ciel (soleil, pluie, orage) grâce à une API météo.
+
+Ces exemples sont conçus pour être :  
+- **visuels**, afin de comprendre immédiatement ce qui se passe,  
+- **simples à modifier**, pour que vous puissiez changer un paramètre (couleur, vitesse, texte…) et constater l’effet,  
+- **réutilisables**, comme point de départ pour vos propres projets (capteurs, robots, objets connectés…).
+
+👉 Les codes complets et prêts à télécharger se trouvent sur le dépôt GitHub :  
+[https://github.com/FYCodeLab/espy-robotics](https://github.com/FYCodeLab/espy-robotics)
 
 ---
 
