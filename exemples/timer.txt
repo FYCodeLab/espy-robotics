@@ -1,0 +1,124 @@
+# code.py — Minuteur 10 minutes (compte à rebours) sur matrice 8×8
+# Affiche les minutes puis les secondes en alternance (chiffres 3×5).
+# À la fin : flash d’alerte. Aucune connexion Wi-Fi requise.
+#
+# Débutants :
+# - Modifiez DUREE_MIN si vous voulez 3, 5, 15 min, etc.
+# - La police 3×5 permet d’afficher 2 chiffres côte à côte sur 8×8.
+#
+# Prérequis à copier dans /lib :
+#   - adafruit_pixel_framebuf
+
+import time
+import board, neopixel
+from adafruit_pixel_framebuf import PixelFramebuffer, VERTICAL
+
+# ───────── Réglages matrice ─────────
+LARGEUR = HAUTEUR = 8
+LUMINOSITE = 0.10
+pixels = neopixel.NeoPixel(
+    board.NEOPIXEL, LARGEUR * HAUTEUR,
+    brightness=LUMINOSITE, auto_write=False,
+    pixel_order=neopixel.GRB  # passez en RGB si couleurs inversées
+)
+fb = PixelFramebuffer(
+    pixels, LARGEUR, HAUTEUR,
+    orientation=VERTICAL, alternating=False,
+    reverse_x=False, reverse_y=True  # origine en haut-gauche
+)
+
+BLANC = 0xFFFFFF
+NOIR  = 0x000000
+ROUGE = 0xFF0000
+
+# ───────── Police 3×5 (0–9) ─────────
+# 5 lignes, 3 colonnes (bit 0 = colonne gauche)
+DIGITS = {
+    "0": [0b111,0b101,0b101,0b101,0b111],
+    "1": [0b010,0b110,0b010,0b010,0b111],
+    "2": [0b111,0b001,0b111,0b100,0b111],
+    "3": [0b111,0b001,0b111,0b001,0b111],
+    "4": [0b101,0b101,0b111,0b001,0b001],
+    "5": [0b111,0b100,0b111,0b001,0b111],
+    "6": [0b111,0b100,0b111,0b101,0b111],
+    "7": [0b111,0b001,0b010,0b010,0b010],
+    "8": [0b111,0b101,0b111,0b101,0b111],
+    "9": [0b111,0b101,0b111,0b001,0b111],
+}
+
+def draw_digit(ch, x0, y0, color=BLANC):
+    """Dessine un chiffre 3×5 à (x0,y0)."""
+    g = DIGITS.get(ch)
+    if not g: return
+    for y in range(5):
+        row = g[y]
+        for x in range(3):
+            if row & (1 << x):
+                fb.pixel(x0 + x, y0 + y, color)
+
+def draw_two_digits(n, color=BLANC):
+    """Affiche un nombre 0–99 en 'AB' (x=0 et x=4)."""
+    s = f"{n:02d}"
+    fb.fill(NOIR)
+    draw_digit(s[0], 0, 1, color)
+    draw_digit(s[1], 4, 1, color)
+
+def draw_colon(on, color=BLANC):
+    """Deux-points clignotant sur la colonne de droite."""
+    if on:
+        fb.pixel(7, 2, color)
+        fb.pixel(7, 4, color)
+
+# ───────── Minuteur ─────────
+DUREE_MIN = 10           # ← changez ici pour 3, 5, 15, etc.
+ALTERNANCE_S = 1.0       # alterne MM et SS toutes les ~1 s
+
+def compte_a_rebours(minutes=DUREE_MIN):
+    t_fin = time.monotonic() + minutes * 60
+    montrer_heures = True
+    t_switch = time.monotonic() + ALTERNANCE_S
+
+    while True:
+        restant = int(max(0, round(t_fin - time.monotonic())))
+        mm = restant // 60
+        ss = restant % 60
+
+        # Choix de l’affichage : MM ou SS
+        if montrer_heures:
+            draw_two_digits(mm)
+        else:
+            draw_two_digits(ss)
+
+        # Deux-points clignotant chaque seconde
+        draw_colon(on=(ss % 2 == 0))
+        fb.display()
+
+        if restant <= 0:
+            break
+
+        # Alternance MM/SS
+        if time.monotonic() >= t_switch:
+            montrer_heures = not montrer_heures
+            t_switch += ALTERNANCE_S
+
+        time.sleep(0.05)
+
+def alerte_fin():
+    """Petite animation de fin (flash rouge)."""
+    for _ in range(6):
+        fb.fill(ROUGE); fb.display(); time.sleep(0.15)
+        fb.fill(NOIR);  fb.display(); time.sleep(0.10)
+    # Afficher 00 final
+    draw_two_digits(0); fb.display()
+
+# ───────── Programme principal ─────────
+try:
+    # Blink de démarrage
+    fb.fill(0x202020); fb.display(); time.sleep(0.2)
+    fb.fill(NOIR);      fb.display(); time.sleep(0.1)
+
+    compte_a_rebours(DUREE_MIN)
+    alerte_fin()
+except KeyboardInterrupt:
+    fb.fill(NOIR); fb.display()
+    raise
