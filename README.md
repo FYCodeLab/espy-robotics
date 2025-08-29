@@ -2,7 +2,7 @@
 
 
 <p align="center">
-  <a href="https://github.com/FYCodeLab/espy-robotics/edit/main/README.md">
+  <a href="https://github.com/FYCodeLab/espy-robotics/blob/main/README.md">
     <img src="https://raw.githubusercontent.com/FYCodeLab/espy-robotics/main/assets/espy%20kits.jpg" width="800">
   </a>
 </p>
