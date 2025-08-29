@@ -1,0 +1,111 @@
+# code.py — Message défilant (3 fois) + arrêt sur « tap » (ESP32-S3 Matrix 8×8)
+# Idée : le texte défile de droite vers la gauche. Si vous tapotez la carte,
+# l’affichage s’éteint immédiatement. Sinon, le message passe 3 fois puis s’éteint.
+#
+# Prérequis dans /lib :
+#   - adafruit_pixel_framebuf
+#   - qmi8658c
+
+import time, math
+import board, busio, neopixel
+from adafruit_pixel_framebuf import PixelFramebuffer, VERTICAL
+import qmi8658c
+
+# ───────── Réglages de la matrice ─────────
+LARGEUR = HAUTEUR = 8
+LUMINOSITE = 0.10
+SWAP_RG = False                       # Passez à True si rouge/vert inversés
+PIXEL_ORDER = neopixel.GRB            # Mettez neopixel.RGB si nécessaire
+
+pixels = neopixel.NeoPixel(
+    board.NEOPIXEL, LARGEUR * HAUTEUR,
+    brightness=LUMINOSITE, auto_write=False,
+    pixel_order=PIXEL_ORDER
+)
+
+fb = PixelFramebuffer(
+    pixels, LARGEUR, HAUTEUR,
+    orientation=VERTICAL, alternating=False,
+    reverse_x=False, reverse_y=True     # (0,0) en haut-gauche
+)
+
+def col(c):  # correction optionnelle R↔G
+    if not SWAP_RG: return c
+    r, g, b = (c>>16)&0xFF, (c>>8)&0xFF, c&0xFF
+    return (g<<16)|(r<<8)|b
+
+NOIR  = col(0x000000)
+BLANC = col(0xFFFFFF)
+ROUGE = col(0xFF2020)
+
+# ───────── IMU pour « tap » ─────────
+# Principe : on mesure la norme |g| ≈ 9.8 m/s² au repos.
+# Un pic (| |g| − 9.8 | > seuil) = tap.
+i2c = busio.I2C(board.IMU_SCL, board.IMU_SDA)
+imu = qmi8658c.QMI8658C(i2c)
+
+TAP_THRESH   = 3.2     # sensibilité du tap (m/s² au-dessus de 9.8)
+DEBOUNCE_MS  = 400     # anti-rebond (ms)
+
+# ───────── Paramètres du message ─────────
+MESSAGE = "  BONJOUR  "   # ajoutez des espaces pour une entrée/sortie douce
+VITESSE = 0.06            # délai entre pas (plus petit = plus rapide)
+LARGEUR_CAR = 8           # police intégrée 8×8 → ~8 px par caractère
+PASSES = 3                # nombre de passages si pas de tap
+
+def clear():
+    fb.fill(NOIR); fb.display()
+
+def tap_detecte():
+    """Vrai si un tap est détecté (pic d'accélération)."""
+    try:
+        ax, ay, az = imu.acceleration
+    except Exception:
+        return False
+    g = math.sqrt(ax*ax + ay*ay + az*az)
+    return abs(g - 9.8) > TAP_THRESH
+
+def defile_une_fois(texte: str) -> bool:
+    """
+    Fait défiler `texte` de droite vers la gauche.
+    Retourne True si terminé, False si interrompu par un tap.
+    """
+    largeur_texte = len(texte) * LARGEUR_CAR
+    last_tap_ms = 0.0
+    for x in range(LARGEUR, -largeur_texte - 1, -1):
+        # Tap / anti-rebond
+        now_ms = time.monotonic() * 1000.0
+        if (now_ms - last_tap_ms) > DEBOUNCE_MS and tap_detecte():
+            return False
+
+        fb.fill(NOIR)
+        fb.text(texte, x, 0, BLANC)  # y=0 car police 8×8
+        fb.display()
+        time.sleep(VITESSE)
+    return True
+
+def blink_start():
+    fb.fill(col(0x202020)); fb.display(); time.sleep(0.20)
+    clear(); time.sleep(0.08)
+
+# ───────── Programme principal ─────────
+try:
+    blink_start()
+    passes_restants = PASSES
+    while passes_restants > 0:
+        fini = defile_une_fois(MESSAGE)
+        if not fini:
+            # Interruption par tap → extinction et fin
+            clear()
+            # petit flash rouge bref pour feedback
+            fb.fill(ROUGE); fb.display(); time.sleep(0.08)
+            clear()
+            break
+        passes_restants -= 1
+
+    # Si tout s’est déroulé sans tap, on s’éteint à la fin.
+    clear()
+
+except KeyboardInterrupt:
+    clear()
+    raise
