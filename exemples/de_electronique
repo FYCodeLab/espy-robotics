@@ -1,0 +1,118 @@
+# code.py — Dé électronique (ESP32-S3 Matrix 8×8 + IMU QMI8658C)
+# Affiche 1 à 6 points (pips) quand on SECoue la carte.
+# Version simple, sans Wi-Fi, avec commentaires pour débutants.
+#
+# Prérequis dans /lib :
+#   - adafruit_pixel_framebuf
+#   - qmi8658c
+
+import time, math, random
+import board, busio, neopixel
+from adafruit_pixel_framebuf import PixelFramebuffer, VERTICAL
+import qmi8658c
+
+# ───────────────────── Matrice 8×8 ─────────────────────
+L = H = 8
+BRIGHTNESS = 0.10  # gardez bas (0.05–0.12)
+pixels = neopixel.NeoPixel(
+    board.NEOPIXEL, L*H,
+    brightness=BRIGHTNESS, auto_write=False,
+    pixel_order=neopixel.GRB  # passez en RGB si couleurs inversées
+)
+
+# Framebuffer : facilite le dessin (pixels, rectangles…)
+fb = PixelFramebuffer(
+    pixels, L, H,
+    orientation=VERTICAL, alternating=False,
+    reverse_x=False, reverse_y=True  # (0,0) en haut-gauche
+)
+
+NOIR  = 0x000000
+BLANC = 0xFFFFFF
+
+# ───────────────────── IMU (accéléromètre) ─────────────────────
+# On lit |g| (norme de l’accélération). Au repos ≈ 9,8 m/s².
+# Si l’écart | |g| − 9,8 | dépasse un seuil → secousse détectée.
+i2c = busio.I2C(board.IMU_SCL, board.IMU_SDA)
+imu = qmi8658c.QMI8658C(i2c)
+
+SHAKE_THRESH = 3.8      # sensibilité (m/s² au-dessus de 9.8)
+DEBOUNCE_MS  = 600      # anti-rebond (évite doubles déclenchements)
+
+# ───────────────────── Dé : positions des points ─────────────────────
+# On dessine chaque pip comme un petit carré 2×2, centré sur une grille 3×3.
+# Ancrages (x,y) pour l’angle haut-gauche du carré 2×2 :
+P = {
+    "TL": (1, 1),  # Top-Left
+    "TR": (5, 1),  # Top-Right
+    "ML": (1, 3),  # Middle-Left
+    "MM": (3, 3),  # Middle-Middle
+    "MR": (5, 3),  # Middle-Right
+    "BL": (1, 5),  # Bottom-Left
+    "BR": (5, 5),  # Bottom-Right
+}
+
+# Faces classiques du dé
+FACES = {
+    1: ("MM",),
+    2: ("TL", "BR"),
+    3: ("TL", "MM", "BR"),
+    4: ("TL", "TR", "BL", "BR"),
+    5: ("TL", "TR", "MM", "BL", "BR"),
+    6: ("TL", "TR", "ML", "MR", "BL", "BR"),
+}
+
+def dot2x2(x, y, color=BLANC):
+    """Dessine un petit carré 2×2 à partir de (x,y)."""
+    fb.fill_rect(x, y, 2, 2, color)
+
+def draw_face(n, color=BLANC):
+    """Efface l’écran et dessine la face n (1–6)."""
+    fb.fill(NOIR)
+    for key in FACES[n]:
+        x, y = P[key]
+        dot2x2(x, y, color)
+    fb.display()
+
+# ───────────────────── Détection de secousse ─────────────────────
+def secousse_detectee():
+    """Retourne True si la secousse dépasse le seuil."""
+    try:
+        ax, ay, az = imu.acceleration  # m/s²
+    except Exception:
+        return False
+    g = math.sqrt(ax*ax + ay*ay + az*az)
+    return abs(g - 9.8) > SHAKE_THRESH
+
+# ───────────────────── Programme principal ─────────────────────
+def main():
+    # Petit blink de démarrage
+    fb.fill(0x202020); fb.display(); time.sleep(0.2)
+    fb.fill(NOIR);      fb.display(); time.sleep(0.1)
+
+    # Face initiale
+    face = 1
+    draw_face(face)
+
+    last_ms = 0.0
+    while True:
+        now_ms = time.monotonic() * 1000.0
+
+        if (now_ms - last_ms) > DEBOUNCE_MS and secousse_detectee():
+            last_ms = now_ms
+            # Tirage d’une nouvelle face (1 à 6)
+            face = random.randint(1, 6)
+            draw_face(face)
+
+            # Petit “clignotement” discret pour confirmer
+            time.sleep(0.06)
+            fb.fill(NOIR); fb.display(); time.sleep(0.06)
+            draw_face(face)
+
+        time.sleep(0.02)  # cadence douce (~50 FPS)
+
+try:
+    main()
+except KeyboardInterrupt:
+    fb.fill(NOIR); fb.display()
+    raise
