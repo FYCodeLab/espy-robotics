@@ -1,4 +1,4 @@
-# Exemples — Matrice 8×8 & IMU (CircuitPython)
+# Exemples de codes pour ESPY (CircuitPython)
 
 Ce dossier regroupe de **petits exemples prêts à copier-coller** : mini-jeux (Snake, Tetris, Pong), **animations LED** (vagues arc-en-ciel, comète, étincelles, plasma, feu) et **mini-outils** (texte défilant, minuterie 10 min, horloge, météo).
 
