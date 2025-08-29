@@ -69,8 +69,9 @@ Ces exemples sont conçus pour être :
 - **simples à modifier**, pour que vous puissiez changer un paramètre (couleur, vitesse, texte…) et constater l’effet,  
 - **réutilisables**, comme point de départ pour vos propres projets (capteurs, robots, objets connectés…).
 
-👉 Les codes complets et prêts à télécharger se trouvent sur le dépôt GitHub :  
-[https://github.com/FYCodeLab/espy-robotics](https://github.com/FYCodeLab/espy-robotics)
+👉 Les codes complets et prêts à télécharger se trouvent dans le dossier **exemples** :  
+[Exemples — FYCodeLab/espy-robotics](https://github.com/FYCodeLab/espy-robotics/tree/main/exemples)
+
 
 ---
 
@@ -87,7 +88,7 @@ Ces exemples sont conçus pour être :
 
 - Le matériel est fourni, il est basé sur une carte **ESP32**, un microcontrôleur extrêmement performant 
 - Pour visualiser les démos : un téléphone, ordinateur ou tablette  
-- Pour modifier les programmes : un ordinateur (PC ou Mace)  
+- Pour modifier les programmes : un ordinateur (PC ou Mac)  
 
 ---
 
