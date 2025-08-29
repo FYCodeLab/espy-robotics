@@ -1,0 +1,267 @@
+# code.py — Démos lumineuses « autonomes » 8×8 (ESP32-S3 + CircuitPython)
+# Objectif : demo animations 
+
+import time, math, random
+import board
+import neopixel
+
+# ─────────────────────────── Réglages matériels ───────────────────────────
+WIDTH = HEIGHT = 8
+N = WIDTH * HEIGHT
+BRIGHTNESS = 0.08                 # gardez bas (0.05–0.12) pour des couleurs propres
+SERPENTINE = True                 # câblage « zigzag » classique sur matrices 8×8
+PIXEL_ORDER = neopixel.GRB        # passez en RGB si rouge/vert inversés
+
+# Si votre carte expose NEOPIXEL intégré (ex. Waveshare ESP32-S3 Matrix) :
+PIX = neopixel.NeoPixel(board.NEOPIXEL, N, brightness=BRIGHTNESS,
+                        auto_write=False, pixel_order=PIXEL_ORDER)
+
+# ─────────────────────────── Outils couleur / mapping ─────────────────────
+GAMMA = 2.2  # petite correction gamma pour des dégradés plus naturels
+
+def idx(x, y):
+    """Convertit (x,y) -> index bandeau, en tenant compte du serpentin."""
+    if SERPENTINE and (y & 1):
+        x = (WIDTH - 1) - x
+    return y * WIDTH + x
+
+def clamp01(v):  # borne 0..1
+    return 0.0 if v < 0.0 else 1.0 if v > 1.0 else v
+
+def g8(v):  # gamma 0..1 -> 0..255
+    v = clamp01(v)
+    return int((v ** (1.0 / GAMMA)) * 255 + 0.5)
+
+def hsv_to_rgb(h, s, v):
+    """HSV (0..1) -> tuple RGB 0..255, avec gamma sur V."""
+    h = (h % 1.0) * 6.0
+    i = int(h)
+    f = h - i
+    p = v * (1.0 - s)
+    q = v * (1.0 - f * s)
+    t = v * (1.0 - (1.0 - f) * s)
+    if   i == 0: r, g, b = v, t, p
+    elif i == 1: r, g, b = q, v, p
+    elif i == 2: r, g, b = p, v, t
+    elif i == 3: r, g, b = p, q, v
+    elif i == 4: r, g, b = t, p, v
+    else:        r, g, b = v, p, q
+    return (g8(r), g8(g), g8(b))
+
+def fill_black():
+    PIX.fill((0, 0, 0))
+    PIX.show()
+
+# ─────────────────────────── Aides d’animation ────────────────────────────
+def fade_all(buf, k):
+    """Estompe un tampon d’intensité (liste float 0..1) par un facteur k."""
+    for i in range(len(buf)):
+        buf[i] *= k
+
+def blit_from_buf(buf, hue=0.0, sat=1.0, gain=1.0):
+    """Affiche un tampon d’intensité en appliquant une teinte/saturation communes."""
+    for y in range(HEIGHT):
+        for x in range(WIDTH):
+            v = clamp01(buf[idx(x, y)] * gain)
+            PIX[idx(x, y)] = hsv_to_rgb(hue, sat, v)
+    PIX.show()
+
+# Palette « feu » simple (heat 0..1)
+def heat_to_rgb(h):
+    h = clamp01(h)
+    # dégradé noir -> rouge -> jaune -> blanc
+    if h < 0.33:
+        v = h / 0.33
+        r, g, b = v, 0.0, 0.0
+    elif h < 0.66:
+        v = (h - 0.33) / 0.33
+        r, g, b = 1.0, v * 0.6, 0.0
+    else:
+        v = (h - 0.66) / 0.34
+        r, g, b = 1.0, 0.6 + 0.4 * v, 0.3 * v
+    return (g8(r), g8(g), g8(b))
+
+# ─────────────────────────── Démos originales ─────────────────────────────
+def demo_aurore(duration=6.0, speed=0.25):
+    """
+    Aurore boréale : rideaux colorés qui ondulent verticalement,
+    avec teinte qui dérive lentement.
+    """
+    t0 = time.monotonic()
+    while time.monotonic() - t0 < duration:
+        t = time.monotonic() * speed
+        for y in range(HEIGHT):
+            for x in range(WIDTH):
+                # superposition de sinusoïdes douces
+                v = 0.55 + 0.45 * math.sin(2*math.pi*(x/7.0 + 0.35*math.sin(y/5.0 + t)))
+                hue = 0.45 + 0.12*math.sin(t*0.7 + y*0.3)
+                PIX[idx(x, y)] = hsv_to_rgb(hue, 0.8, clamp01(v))
+        PIX.show()
+
+def demo_kaleido(duration=6.0, speed=0.9):
+    """
+    Kaléidoscope : on dessine un quart, puis on duplique par symétrie.
+    """
+    t0 = time.monotonic()
+    while time.monotonic() - t0 < duration:
+        t = (time.monotonic() - t0) * speed
+        for y in range(HEIGHT//2 + 1):
+            for x in range(WIDTH//2 + 1):
+                # motif radial + rotation de teinte
+                d = math.hypot(x-3.5, y-3.5)
+                v = 0.2 + 0.8*clamp01(0.5 + 0.5*math.sin(3.0*d - t*2.2))
+                hue = (t*0.08 + d*0.05) % 1.0
+                c = hsv_to_rgb(hue, 0.9, v)
+                # 4 symétries
+                for sx, sy in ((x, y),(WIDTH-1-x, y),(x, HEIGHT-1-y),(WIDTH-1-x, HEIGHT-1-y)):
+                    PIX[idx(sx, sy)] = c
+        PIX.show()
+
+def demo_pluie_etoiles(duration=5.0, densite=0.35, chute=0.65, fade=0.80):
+    """
+    Pluie d’étoiles : des paillettes naissent en haut et tombent avec traînée.
+    """
+    buf = [0.0]*N
+    t0 = time.monotonic()
+    while time.monotonic() - t0 < duration:
+        # naissance au sommet
+        for x in range(WIDTH):
+            if random.random() < densite/WIDTH:
+                buf[idx(x, 0)] = 1.0
+        # déplacement vers le bas + diffusion
+        for y in range(HEIGHT-1, 0, -1):
+            for x in range(WIDTH):
+                i = idx(x, y)
+                j = idx(x, y-1)
+                buf[i] = max(buf[i]*fade, buf[j]*chute)
+        # rendu bleu scintillant
+        for y in range(HEIGHT):
+            for x in range(WIDTH):
+                v = clamp01(buf[idx(x, y)])
+                PIX[idx(x, y)] = hsv_to_rgb(0.58, 0.7, v)
+        PIX.show()
+        # léger étalement horizontal
+        for y in range(HEIGHT):
+            for x in range(1, WIDTH-1):
+                i = idx(x, y)
+                buf[i] = (buf[i] + 0.25*(buf[idx(x-1,y)] + buf[idx(x+1,y)])) / 1.5
+
+def demo_feu(duration=6.0, refroid=0.03):
+    """
+    Feu stylisé : chaleur aléatoire en bas, qui monte en refroidissant.
+    """
+    heat = [0.0]*N
+    t0 = time.monotonic()
+    while time.monotonic() - t0 < duration:
+        # base chaude aléatoire
+        for x in range(WIDTH):
+            heat[idx(x, HEIGHT-1)] = random.uniform(0.6, 1.0)
+        # propagation vers le haut (moyenne locale) + refroidissement
+        for y in range(HEIGHT-2, -1, -1):
+            for x in range(WIDTH):
+                s = heat[idx(x, y+1)]
+                if x > 0:       s += heat[idx(x-1, y+1)]
+                if x < WIDTH-1: s += heat[idx(x+1, y+1)]
+                s *= 0.333
+                heat[idx(x, y)] = max(0.0, s - refroid)
+        # rendu palette feu
+        for y in range(HEIGHT):
+            for x in range(WIDTH):
+                PIX[idx(x, y)] = heat_to_rgb(heat[idx(x, y)])
+        PIX.show()
+
+def demo_comete_orbitale(duration=5.0, trail=0.82):
+    """
+    Comète qui tourne sur le pourtour, avec une traînée colorée.
+    """
+    # parcours du périmètre (32 positions)
+    chemin = []
+    for x in range(WIDTH):               chemin.append((x, 0))
+    for y in range(1, HEIGHT):           chemin.append((WIDTH-1, y))
+    for x in range(WIDTH-2, -1, -1):     chemin.append((x, HEIGHT-1))
+    for y in range(HEIGHT-2, 0, -1):     chemin.append((0, y))
+    buf = [0.0]*N
+    t0 = time.monotonic()
+    k = 0
+    while time.monotonic() - t0 < duration:
+        fade_all(buf, trail)
+        x, y = chemin[k % len(chemin)]
+        buf[idx(x, y)] = 1.0
+        # hue qui tourne
+        hue = (k / len(chemin)) % 1.0
+        blit_from_buf(buf, hue=hue, sat=1.0, gain=1.0)
+        k += 1
+        time.sleep(0.02)
+
+def demo_bulles(duration=6.0, spawn=0.20, grow=0.18):
+    """
+    Bulles : petits cercles qui naissent et grandissent en s’effaçant.
+    """
+    # chaque bulle = (cx, cy, rayon, intensité)
+    bulles = []
+    t0 = time.monotonic()
+    base_hue = random.random()
+    while time.monotonic() - t0 < duration:
+        if random.random() < spawn:
+            bulles.append([random.uniform(1.0, 6.0), random.uniform(1.0, 6.0), 0.5, 1.0])
+        PIX.fill((0,0,0))
+        for b in list(bulles):
+            cx, cy, r, a = b
+            r += grow; a *= 0.92
+            b[2], b[3] = r, a
+            # anneau fin : |distance - r| < 0.4
+            for y in range(HEIGHT):
+                for x in range(WIDTH):
+                    d = math.hypot(x - cx, y - cy)
+                    if abs(d - r) < 0.45:
+                        hue = (base_hue + 0.12*r) % 1.0
+                        col = hsv_to_rgb(hue, 0.7, clamp01(0.9*a))
+                        PIX[idx(x, y)] = col
+            if a < 0.06 or r > 6.0:
+                bulles.remove(b)
+        PIX.show()
+        time.sleep(0.02)
+
+def demo_vortex(duration=6.0, speed=0.9):
+    """
+    Vortex : teinte en fonction de l’angle autour du centre, intensité liée au rayon.
+    """
+    cx, cy = (WIDTH-1)/2.0, (HEIGHT-1)/2.0
+    t0 = time.monotonic()
+    while time.monotonic() - t0 < duration:
+        t = (time.monotonic() - t0) * speed
+        for y in range(HEIGHT):
+            for x in range(WIDTH):
+                ang = math.atan2(y - cy, x - cx)  # -pi..pi
+                dist = math.hypot(x - cx, y - cy)
+                hue = (ang/(2*math.pi) + 0.5 + 0.15*t) % 1.0
+                val = clamp01(1.0 - dist/4.2) ** 1.5
+                PIX[idx(x, y)] = hsv_to_rgb(hue, 1.0, val)
+        PIX.show()
+
+# ─────────────────────────── Orchestration ────────────────────────────────
+DEMOS = [
+    lambda: demo_aurore(duration=6.0, speed=0.28),
+    lambda: demo_kaleido(duration=6.0, speed=1.0),
+    lambda: demo_pluie_etoiles(duration=5.0, densite=0.40, chute=0.70, fade=0.82),
+    lambda: demo_feu(duration=6.0, refroid=0.035),
+    lambda: demo_comete_orbitale(duration=5.0, trail=0.86),
+    lambda: demo_bulles(duration=6.0, spawn=0.22, grow=0.20),
+    lambda: demo_vortex(duration=6.0, speed=1.0),
+]
+
+def run_show():
+    """Lance toutes les démos, avec une courte respiration entre elles."""
+    while True:
+        for d in DEMOS:
+            d()
+            fill_black()
+            time.sleep(0.18)
+
+# ─────────────────────────── Exécution ───────────────────────────────────
+try:
+    fill_black()               # démarrage propre
+    run_show()
+except KeyboardInterrupt:
+    fill_black()               # extinction propre si arrêt via REPL
+    raise
