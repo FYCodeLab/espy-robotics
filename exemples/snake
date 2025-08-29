@@ -1,0 +1,247 @@
+# code.py — SNAKE 8×8 (ESP32-S3 Matrix + IMU QMI8658C, CircuitPython)
+# Jeu au TILT (inclinaison). À la fin :
+#  - le SCORE s’affiche,
+#  - un GROS TAPOTEMENT relance une nouvelle partie.
+# Au début de chaque partie : petit FLASH + apparition de "SNAKE".
+#
+# Prérequis à copier dans /lib :
+#   - adafruit_pixel_framebuf
+#   - qmi8658c
+#
+# Conseils :
+#   - Si les couleurs semblent inversées, passez PIXEL_ORDER en neopixel.RGB.
+#   - Ajustez TILT_THRESH (sensibilité) selon votre tenue de la carte.
+
+import time, math, random
+import board, busio, neopixel
+from adafruit_pixel_framebuf import PixelFramebuffer, VERTICAL
+import qmi8658c
+
+# ─────────────────────────── Afficheur 8×8 ───────────────────────────
+W = H = 8
+BRIGHTNESS = 0.10
+PIXEL_ORDER = neopixel.GRB  # ou neopixel.RGB selon votre matériel
+
+pixels = neopixel.NeoPixel(
+    board.NEOPIXEL, W*H, brightness=BRIGHTNESS,
+    auto_write=False, pixel_order=PIXEL_ORDER
+)
+
+# Framebuffer : simplifie le dessin (pixel, rect, text)
+fb = PixelFramebuffer(
+    pixels, W, H,
+    orientation=VERTICAL, alternating=False,
+    reverse_x=False, reverse_y=True  # (0,0) en haut-gauche
+)
+
+# Couleurs
+NOIR   = 0x000000
+POMME  = 0x00FF40
+TETE   = 0xFFA000
+CORPS  = 0x20A0FF
+TEXTE  = 0xFFFFFF
+ROUGE  = 0xFF0020
+
+# ─────────────────────────── IMU (accéléromètre) ───────────────────────────
+# On lit l’accélération (m/s²). Au repos, |g| ≈ 9.8.
+i2c = busio.I2C(board.IMU_SCL, board.IMU_SDA)
+imu = qmi8658c.QMI8658C(i2c)
+
+# Seuils et temporisations (à ajuster si besoin)
+TILT_THRESH       = 2.0    # inclinaison minimale pour changer de direction
+RESTART_THRESH    = 6.0    # « GROS tapotement » pour relancer après Game Over
+DIR_DEBOUNCE_MS   = 120    # anti-rebond pour les changements de direction
+STEP_MS_BASE      = 420    # vitesse de base (ms par pas)
+STEP_MS_MIN       = 160    # vitesse min (plus petit = plus rapide)
+ACCEL_EVERY_APPLE = 18     # on accélère de X ms à chaque pomme mangée
+
+# ─────────────────────────── Utilitaires d’affichage ───────────────────────────
+def clear():
+    fb.fill(NOIR); fb.display()
+
+def splash_snake():
+    """Petit FLASH + affiche 'SNAKE' lettre par lettre (police 8×8)."""
+    fb.fill(0x202020); fb.display(); time.sleep(0.18)
+    clear(); time.sleep(0.06)
+    for ch in "SNAKE":
+        fb.fill(NOIR)
+        fb.text(ch, 0, 0, TEXTE)
+        fb.display()
+        time.sleep(0.20)
+    clear()
+
+# Police 3×5 pour afficher 2 chiffres (score) sur 8×8
+DIGITS = {
+    "0":[0b111,0b101,0b101,0b101,0b111],"1":[0b010,0b110,0b010,0b010,0b111],
+    "2":[0b111,0b001,0b111,0b100,0b111],"3":[0b111,0b001,0b111,0b001,0b111],
+    "4":[0b101,0b101,0b111,0b001,0b001],"5":[0b111,0b100,0b111,0b001,0b111],
+    "6":[0b111,0b100,0b111,0b101,0b111],"7":[0b111,0b001,0b010,0b010,0b010],
+    "8":[0b111,0b101,0b111,0b101,0b111],"9":[0b111,0b101,0b111,0b001,0b111]
+}
+
+def draw_digit(ch, x0, y0, color=TEXTE):
+    g = DIGITS.get(ch); 
+    if not g: return
+    for y in range(5):
+        row = g[y]
+        for x in range(3):
+            if row & (1 << x):
+                fb.pixel(x0 + x, y0 + y, color)
+
+def show_score(score, hold=1.8):
+    """Affiche le score (0–99) avec la police 3×5."""
+    s = f"{min(99, score):02d}"
+    fb.fill(NOIR)
+    draw_digit(s[0], 0, 1, TEXTE)
+    draw_digit(s[1], 4, 1, TEXTE)
+    fb.display()
+    t_end = time.monotonic() + hold
+    while time.monotonic() < t_end:
+        time.sleep(0.02)
+
+# ─────────────────────────── Jeu Snake — cœur du moteur ───────────────────────────
+def spawn_apple(snake):
+    """Place une pomme sur une case libre."""
+    libres = [(x,y) for y in range(H) for x in range(W) if (x,y) not in snake]
+    return random.choice(libres) if libres else None
+
+def draw_board(snake, apple):
+    """Dessine le plateau : pomme + serpent (tête + corps)."""
+    fb.fill(NOIR)
+    if apple:
+        fb.pixel(apple[0], apple[1], POMME)
+    # corps
+    for x, y in snake[1:]:
+        fb.pixel(x, y, CORPS)
+    # tête
+    hx, hy = snake[0]
+    fb.pixel(hx, hy, TETE)
+    fb.display()
+
+def read_direction(current_dir, last_change_ms):
+    """
+    Lit l’IMU et retourne une nouvelle direction (dx,dy) si l’inclinaison dépasse le seuil.
+    On interdit l’inversion 180° si le serpent a une longueur > 1.
+    """
+    now_ms = time.monotonic() * 1000.0
+    if now_ms - last_change_ms < DIR_DEBOUNCE_MS:
+        return current_dir, last_change_ms  # trop tôt pour rechanger
+
+    try:
+        ax, ay, _ = imu.acceleration
+    except Exception:
+        return current_dir, last_change_ms
+
+    # Choisir l’axe majoritaire et vérifier le seuil
+    cand = None
+    if abs(ax) > abs(ay) and abs(ax) > TILT_THRESH:
+        cand = (1,0) if ax > 0 else (-1,0)
+    elif abs(ay) > TILT_THRESH:
+        cand = (0,1) if ay > 0 else (0,-1)
+
+    if cand is None:
+        return current_dir, last_change_ms
+
+    # Interdire l’inversion 180° (si longueur > 1, gérée dans la boucle)
+    dx, dy = current_dir
+    ndx, ndy = cand
+    if (ndx, ndy) == (-dx, -dy):
+        return current_dir, last_change_ms
+
+    return cand, now_ms
+
+def big_tap_detected():
+    """Vrai si un 'gros tapotement' est détecté (écart à 9.8 m/s²)."""
+    try:
+        ax, ay, az = imu.acceleration
+    except Exception:
+        return False
+    g = math.sqrt(ax*ax + ay*ay + az*az)
+    return abs(g - 9.8) > RESTART_THRESH
+
+def play_one_game():
+    """Joue une partie complète, retourne le score à la fin."""
+    splash_snake()
+
+    # Serpent initial (3 segments, centre)
+    snake = [(3,4),(2,4),(1,4)]
+    direction = (1,0)  # vers la droite
+    last_dir_change_ms = 0.0
+    apple = spawn_apple(snake)
+    score = 0
+    step_ms = STEP_MS_BASE
+    last_step = time.monotonic() * 1000.0
+
+    while True:
+        # 1) Lire la direction au tilt (avec anti-rebond)
+        direction, last_dir_change_ms = read_direction(direction, last_dir_change_ms)
+
+        # 2) Avancer à cadence régulière
+        now_ms = time.monotonic() * 1000.0
+        if now_ms - last_step >= step_ms:
+            last_step = now_ms
+
+            # Calcul de la nouvelle tête
+            dx, dy = direction
+            hx, hy = snake[0]
+            nx, ny = hx + dx, hy + dy
+
+            # Mur = Game Over ?
+            if not (0 <= nx < W and 0 <= ny < H):
+                break
+
+            # Collision corps = Game Over
+            if (nx, ny) in snake:
+                break
+
+            # Avancer
+            snake.insert(0, (nx, ny))
+            if apple and (nx, ny) == apple:
+                score += 1
+                apple = spawn_apple(snake)
+                # Accélération douce
+                step_ms = max(STEP_MS_MIN, step_ms - ACCEL_EVERY_APPLE)
+            else:
+                snake.pop()  # pas de pomme : on enlève la queue
+
+        # 3) Dessin
+        draw_board(snake, apple)
+        time.sleep(0.02)  # fluidité ~50 FPS
+
+    return score
+
+def game_over_and_wait_restart(score):
+    """Affiche le score puis attend un GROS tapotement pour relancer."""
+    # Flash rouge bref
+    fb.fill(ROUGE); fb.display(); time.sleep(0.18)
+    clear()
+    # Score sur 8×8 (3×5, 2 chiffres)
+    show_score(score, hold=1.0)
+
+    # Clignote doucement en attendant le gros tapotement
+    t = 0.0
+    while True:
+        if big_tap_detected():
+            # Confirmation : flash blanc
+            fb.fill(0xFFFFFF); fb.display(); time.sleep(0.08)
+            clear()
+            return
+        # petit souffle visuel
+        val = int((math.sin(t) * 0.5 + 0.5) * 40) + 10
+        fb.fill((val, val, val)); fb.display(); time.sleep(0.06)
+        t += 0.25
+        clear(); time.sleep(0.04)
+
+# ─────────────────────────── Boucle principale ───────────────────────────
+try:
+    # Blink de démarrage
+    fb.fill(0x202020); fb.display(); time.sleep(0.20)
+    clear()
+
+    while True:
+        sc = play_one_game()
+        game_over_and_wait_restart(sc)
+
+except KeyboardInterrupt:
+    clear()
+    raise
