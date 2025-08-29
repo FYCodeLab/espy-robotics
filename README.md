@@ -12,6 +12,13 @@
   <tr>
     <td style="padding-right:20px; vertical-align:middle;">
       <b>Bienvenue à <i>ESPY-robotics</i></b>, un projet conçu pour vous familiariser avec l’électronique et la robotique à travers des exemples concrets et des démos interactives.
+ <h2>📦 Vous souhaitez acheter un kit&nbsp;?</h2>
+  <p>Contactez-nous et nous vous répondrons rapidement.</p>
+
+  <a class="btn"
+     href="mailto:espy-robotics@protonmail.com?subject=Demande%20d%E2%80%99informations%20%E2%80%94%20kit%20ESPy%20Robotics&body=Bonjour%2C%0A%0AJe%20souhaite%20des%20informations%20sur%20le%20kit%20ESPy%20Robotics%20(prix%2C%20disponibilit%C3%A9%2C%20contenu).%0A%0ANom%20%3A%20%0AOrganisation%20%3A%20%0ABesoins%20%3A%20%0A%0AMerci.">
+    ✉️ Nous contacter par e-mail
+  </a>
     </td>
     <td style="vertical-align:middle;">
       <img src="https://github.com/FYCodeLab/espy-robotics/blob/main/assets/espysmall.png?raw=true" width="400">
