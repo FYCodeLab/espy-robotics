@@ -36,7 +36,7 @@ L’idée est simple :
 - Vous branchez la carte **ESPY** (basé sur un microcontrôleur ESP32) et suivez les instructions incluses dans le kit
 - Vous lancez l’audioguide, qui vous explique pas à pas ce que vous voyez.  
 - Vous assistez à des démos de **programmes** : allumer une LED, jouer un son, contrôler une matrice lumineuse, créer une petite animation, etc.
-- Vous **installez**, testez et **modifiez** vous-même vos programmes, en utilisant les exemples complets  de code donnés sur ce site  
+- Vous **installez**, testez et **modifiez** vous-même vos programmes, en utilisant les exemples complets  de code donnés sur ce site et le guide papier fourni.
 
 Chaque chapitre associe une **explication audio** et une **démonstration**, afin de montrer les possibilités offertes par le module d’électronique embarquée ESP32. Vous êtes complétement libres de démonter, remonter, programmer le module fourni. C'est même recommandé: c'est comme ça qu'on apprend !
 
@@ -47,7 +47,7 @@ Chaque chapitre associe une **explication audio** et une **démonstration**, afi
 - Découvrir les bases de l’**électronique** : LEDs, boutons, capteurs...  
 - Comprendre les bases de la **programmation** (CircuitPython).  
 - S’initier à la **robotique** par de petits projets interactifs.  
-- Développer l’esprit pratique et créatif grâce à des exemples courts.  
+- Développer l’esprit **pratique** et **créatif** grâce à des exemples courts.  
 
 ---
 
