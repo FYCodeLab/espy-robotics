@@ -30,7 +30,7 @@ L’objectif est d’explorer, d’échanger et d’apprendre ensemble !
 ## 🎧 Principe
 
 L’idée est simple :  
-- Vous branchez la carte **ESPY** (basé sur un microcontrôleur ESP32) et suivez les instructions incluses dans le kit
+- Vous branchez la carte **ESPY** (basée sur un microcontrôleur ESP32) et suivez les instructions incluses dans le kit
 - Vous lancez l’audioguide, qui vous explique pas à pas ce que vous voyez.  
 - Vous assistez à des démos de **programmes** : allumer une LED, jouer un son, contrôler une matrice lumineuse, créer une petite animation, etc.
 - Vous **installez**, testez et **modifiez** vous-même vos programmes, en utilisant les exemples complets  de code donnés sur ce site et le guide papier fourni.
@@ -92,8 +92,6 @@ ESPY-robotics promeut l’esprit open-source et encourage chacun à fabriquer lu
     <img src="https://raw.githubusercontent.com/FYCodeLab/espy-robotics/main/assets/espy%20kits.jpg" width="800">
   </a>
 </p>
-      <b>Bienvenue à <i>ESPY-robotics</i></b>, un projet conçu pour vous familiariser avec l’électronique et la robotique à travers des exemples concrets et des démos interactives.
-
 
 
 
