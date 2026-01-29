@@ -99,7 +99,7 @@ ESPY-robotics promeut l’esprit open-source et encourage chacun à fabriquer lu
 
 
 - **Kit de démarrage ESPY-Audioguide** : puce ESP32 et démos intégrées  
-- *(À venir)* **Kit so,ore** : inclut un micro et un haut parleur pour parler et faire parler Espy
+- *(À venir)* **Kit sonore** : inclut un micro et un haut parleur pour parler et faire parler Espy
 - *(À venir)* **Kit écran** : ajoutez un écran LCD pour afficher vos propres messages et visuels  
 - *(À venir)* **Kit détecteurs** : mesurez la lumière, les sons ou la température  
 
