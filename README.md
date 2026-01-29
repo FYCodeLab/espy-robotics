@@ -11,9 +11,14 @@
 <table>
   <tr>
     <td style="padding-right:20px; vertical-align:middle;">
+
+ <h2>📦 Un kit de découverte open-source des microcontrôleurs ESP32</h2>
       <b>Bienvenue à <i>ESPY-robotics</i></b>, un projet conçu pour vous familiariser avec l’électronique et la robotique à travers des exemples concrets et des démos interactives.
- <h2>📦 Vous souhaitez acheter un kit&nbsp;?</h2>
-  <p>Contactez-nous et nous vous répondrons rapidement.</p>
+ESPY-robotics soutient et promeut l’esprit <b>« Vibe Robotics »</b> : une approche progressive, accessible et expérimentale de la robotique. L’idée est de partir de projets simples, de tester rapidement, puis de prendre le temps de comprendre ce qui fonctionne, pourquoi, et comment aller plus loin.
+
+
+Vous découvrirez la puissance et la versatilité des microcontrôleurs ESP32, associées à la simplicité de CircuitPython et du logiciel Thonny. La démarche "Vibe Robotics", basée sur l'assistance par les <b>LLM (chatGPT, Gemini...)</b>  vise à lever les freins à l’entrée pour les makers amateurs, tout en rappelant que la facilité d’accès ne remplace ni la rigueur ni l’apprentissage auprès de spécialistes. 
+L’objectif est d’explorer, d’échanger et d’apprendre ensemble !
 
   <a class="btn"
      href="mailto:espy-robotics@protonmail.com?subject=Demande%20d%E2%80%99informations%20%E2%80%94%20kit%20ESPy%20Robotics&body=Bonjour%2C%0A%0AJe%20souhaite%20des%20informations%20sur%20le%20kit%20ESPy%20Robotics%20(prix%2C%20disponibilit%C3%A9%2C%20contenu).%0A%0ANom%20%3A%20%0AOrganisation%20%3A%20%0ABesoins%20%3A%20%0A%0AMerci.">
@@ -83,6 +88,18 @@ Ces exemples sont conçus pour être :
 ---
 
 ## 📦 Les kits disponibles
+
+
+      <b>Bienvenue à <i>ESPY-robotics</i></b>, un projet conçu pour vous familiariser avec l’électronique et la robotique à travers des exemples concrets et des démos interactives.
+ <h2>📦 Vous souhaitez acheter un kit&nbsp;?</h2>
+  <p>Contactez-nous et nous vous répondrons rapidement.</p>
+
+  <a class="btn"
+     href="mailto:espy-robotics@protonmail.com?subject=Demande%20d%E2%80%99informations%20%E2%80%94%20kit%20ESPy%20Robotics&body=Bonjour%2C%0A%0AJe%20souhaite%20des%20informations%20sur%20le%20kit%20ESPy%20Robotics%20(prix%2C%20disponibilit%C3%A9%2C%20contenu).%0A%0ANom%20%3A%20%0AOrganisation%20%3A%20%0ABesoins%20%3A%20%0A%0AMerci.">
+    ✉️ Nous contacter par e-mail
+  </a>
+
+
 
 - **Kit de démarrage ESPY-Audioguide** : puce ESP32 et démos intégrées  
 - *(À venir)* **Kit so,ore** : inclut un micro et un haut parleur pour parler et faire parler Espy
