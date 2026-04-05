@@ -58,10 +58,6 @@ L’objectif est d’explorer, d’échanger et d’apprendre ensemble !
      - Le **guide papier** inclus
 
 ---
-*Besoin d'annotations supplémentaires ou d'exemples de couleurs pour débutants ? Dites-le-moi !*
-Chaque chapitre associe une **explication audio** et une **démonstration**, afin de montrer les possibilités offertes par le module d’électronique embarquée ESP32. Vous êtes complétement libres de démonter, remonter, programmer le module fourni. C'est même recommandé: c'est comme ça qu'on apprend !
-
----
 
 ## 🚀 Objectifs 
 
