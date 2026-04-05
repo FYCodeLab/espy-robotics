@@ -31,9 +31,10 @@ L’objectif est d’explorer, d’échanger et d’apprendre ensemble !
 ## 🎧 Le kit decouverte "ESPY robotics"
 <p align="center">
   <a href="https://github.com/FYCodeLab/espy-robotics">
-    <img src="https://raw.githubusercontent.com/FYCodeLab/espy-robotics/main/assets/espy%20kits.jpg" width="800">
+    <img src="assets/Espyimg.JPG" width="800">
   </a>
 </p>
+
 # Guide d'utilisation de la carte ESPY
 
 ## Étapes à suivre
