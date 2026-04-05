@@ -19,7 +19,7 @@ Vous découvrirez la <b>puissance</b> et la <b>versatilité</b> des <b>microcont
 L’objectif est d’explorer, d’échanger et d’apprendre ensemble !
     </td>
     <td style="vertical-align:middle;">
-      <img src="assets/Espyimg.JPG?raw=true" width="800">
+      <img src="assets/espysmall.png?raw=true" width="800">
     </td>
   </tr>
 </table>
