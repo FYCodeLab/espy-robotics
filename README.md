@@ -8,11 +8,16 @@
   <tr>
     <td style="padding-right:20px; vertical-align:middle;">
 
- <h2>💡 Un kit de découverte open-source des microcontrôleurs ESP32 pour débutants</h2>
+ <h2>💡 Le microcontrôleur ESP32 : idéal pour débutants</h2>
       <b>Bienvenue à <i>ESPY-robotics</i></b>, un projet conçu pour vous familiariser avec l’électronique et la robotique à travers des exemples concrets et des démos interactives.
 ESPY-robotics soutient et promeut l’esprit <b>« Vibe Robotics »</b> : une approche progressive, accessible et expérimentale de la robotique   
 L’idée est de partir de projets simples, de tester rapidement, puis de prendre le temps de comprendre ce qui fonctionne, pourquoi, et comment aller plus loin.
 <br><br>
+<p align="center">
+  <a href="https://github.com/FYCodeLab/espy-robotics">
+    <img src="https://raw.githubusercontent.com/FYCodeLab/espy-robotics/main/assets/espy%20kits.jpg" width="800">
+  </a>
+</p>
 
 Vous découvrirez la <b>puissance</b> et la <b>versatilité</b> des <b>microcontrôleurs ESP32</b>, associées à la simplicité de <b>CircuitPython</b> et du logiciel <b>Thonny</b>. La démarche <b>« Vibe Robotics »</b>, pendant électronique du « Vibe Coding », est basée sur l'assistance par les <b>LLM (chatGPT, Gemini...)</b>  vise à lever les freins à l’entrée pour les makers amateurs, tout en rappelant que la facilité d’accès ne remplace ni la rigueur ni l’apprentissage auprès de spécialistes. 
 L’objectif est d’explorer, d’échanger et d’apprendre ensemble !
@@ -27,7 +32,7 @@ L’objectif est d’explorer, d’échanger et d’apprendre ensemble !
 
 ---
 
-## 🎧 Principe
+## 🎧 Le kit decouverte "ESPY robotics"
 
 L’idée est simple :  
 - Vous branchez la carte **ESPY** (basée sur un microcontrôleur ESP32) et suivez les instructions incluses dans le kit
