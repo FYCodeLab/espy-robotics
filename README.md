@@ -34,12 +34,31 @@ L’objectif est d’explorer, d’échanger et d’apprendre ensemble !
     <img src="https://raw.githubusercontent.com/FYCodeLab/espy-robotics/main/assets/espy%20kits.jpg" width="800">
   </a>
 </p>
-L’idée est simple :  
-- Vous branchez la carte **ESPY** (basée sur un microcontrôleur ESP32) et suivez les instructions incluses dans le kit
-- Vous lancez l’audioguide, qui vous explique pas à pas ce que vous voyez.  
-- Vous assistez à des démos de **programmes** : allumer une LED, jouer un son, contrôler une matrice lumineuse, créer une petite animation, etc.
-- Vous **installez**, testez et **modifiez** vous-même vos programmes, en utilisant les exemples complets  de code donnés sur ce site et le guide papier fourni.
+# Guide d'utilisation de la carte ESPY
 
+## Étapes à suivre
+
+1. **Branchement**
+   - Branchez la carte **ESPY** (basée sur un microcontrôleur **ESP32**).
+   - Suivez les instructions incluses dans le kit.
+
+2. **Lancement de l'audioguide**
+   - Lancez l’audioguide pour obtenir des explications **pas à pas**.
+
+3. **Démonstrations**
+   Découvrez des démos de programmes :
+   - Allumer une **LED**
+   - Jouer un **son**
+   - Contrôler une **matrice lumineuse**
+   - Créer une **petite animation**
+
+4. **Installation et personnalisation**
+   - Installez, testez et modifiez vos programmes en utilisant :
+     - Les **exemples de code** fournis
+     - Le **guide papier** inclus
+
+---
+*Besoin d'annotations supplémentaires ou d'exemples de couleurs pour débutants ? Dites-le-moi !*
 Chaque chapitre associe une **explication audio** et une **démonstration**, afin de montrer les possibilités offertes par le module d’électronique embarquée ESP32. Vous êtes complétement libres de démonter, remonter, programmer le module fourni. C'est même recommandé: c'est comme ça qu'on apprend !
 
 ---
