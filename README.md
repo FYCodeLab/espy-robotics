@@ -35,6 +35,8 @@ L’objectif est d’explorer, d’échanger et d’apprendre ensemble !
   </a>
 </p>
 
+[📧 Tenez moi au courant des kits EspY-Robotics](mailto:espy-robotics@protonmail.com?subject=Tenez%20moi%20au%20courant%20des%20kits%20EspY-Robotics&body=%5BMerci%20de%20me%20mettre%20au%20courant.%0ANous%20ne%20transmettrons%20pas%20votre%20adresse%20%C3%A0%20des%20tiers.%5D)
+
 # Guide d'utilisation de la carte ESPY
 
 ## Étapes à suivre
