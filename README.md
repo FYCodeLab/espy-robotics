@@ -1,6 +1,20 @@
-# ESPY-Robotics
+# Vibe-Robotics
 
-
+> ## 🙌 Merci – Maker Faire 2026  
+>  
+> Merci à toutes celles et ceux qui sont passés au stand **Vibe Robotics**  
+> lors de la **Maker Faire 2026** au *Musée des Arts et Métiers* le 11 avril !  
+>  
+> ---  
+>  
+> ### 📩 Restons en contact  
+>  
+> N'hésitez pas à nous envoyer un email (voir ci-dessous) si vous :  
+> - avez des questions  
+> - avez des suggestions  
+> - souhaitez être tenus informés de nos projets  
+>  
+> Nous serons ravis d’échanger avec vous.
 
 
 
