@@ -4,7 +4,8 @@
 >  
 > Merci à toutes celles et ceux qui sont passés au stand **Vibe Robotics**  
 > lors de la **Maker Faire 2026** au *Musée des Arts et Métiers* le 11 avril !  
->  
+>  ---
+> [![Vibe Robotics Banner](banner.jpg)](links-mf2026.md)
 > ---  
 >  
 > ### 📩 Restons en contact  
