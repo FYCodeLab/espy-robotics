@@ -1,6 +1,6 @@
 # 🧰 Composants – Vibe Robotics (Maker Faire Paris 2026)
 
-[![Vibe Robotics Banner](assets/banner.jpg)](links-mf2026.md)
+[![Vibe Robotics Banner](assets/2CD7A63C-BB6D-41F6-942D-FF5C105FF0B5.png)](links-mf2026.md)
 
 Retrouvez ci-dessous les cartes présentées au stand avec un lien pour voir le produit et un lien pour l’acheter.
 
