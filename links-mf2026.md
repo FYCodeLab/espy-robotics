@@ -19,7 +19,6 @@ Retrouvez ci-dessous les cartes présentées au stand avec un lien pour voir le 
 
 ![ESP32-S3 Matrix](https://hackster.imgix.net/uploads/attachments/1762756/_6h8G7fmQ7O.blob?auto=compress%2Cformat&w=900&h=675&fit=min)
 
-- 🔗 Voir le produit : https://hackster.imgix.net/uploads/attachments/1762756/_6h8G7fmQ7O.blob?auto=compress%2Cformat&w=900&h=675&fit=min  
 - 🛒 Acheter : https://s.click.aliexpress.com/e/_Ey4Q5IC  
 
 ---
@@ -28,7 +27,6 @@ Retrouvez ci-dessous les cartes présentées au stand avec un lien pour voir le 
 
 ![ESP32-S3-CAM](https://www.gotronic.fr/media/cache/sylius_shop_product_original/64/97/6355449c2dc146fc0d6ab63e8344.jpg)
 
-- 🔗 Voir le produit : https://www.gotronic.fr/media/cache/sylius_shop_product_original/64/97/6355449c2dc146fc0d6ab63e8344.jpg  
 - 🛒 Acheter : https://s.click.aliexpress.com/e/_EH1uXtW  
 
 ---
@@ -37,7 +35,6 @@ Retrouvez ci-dessous les cartes présentées au stand avec un lien pour voir le 
 
 ![S3 Mini Pro](https://community-assets.home-assistant.io/original/4X/5/d/6/5d60deb7e24d39858ebbca2460a142d0a3f7e9c6.jpeg)
 
-- 🔗 Voir le produit : https://community-assets.home-assistant.io/original/4X/5/d/6/5d60deb7e24d39858ebbca2460a142d0a3f7e9c6.jpeg  
 - 🛒 Acheter : https://a.aliexpress.com/_EItYFdm  
 
 ---
