@@ -10,7 +10,6 @@ Retrouvez ci-dessous les cartes présentées au stand avec un lien pour voir le 
 
 ![ESP32-C3 OLED](https://i.sstatic.net/0UDbLeCY.png)
 
-- 🔗 Voir le produit : https://i.sstatic.net/0UDbLeCY.png  
 - 🛒 Acheter : https://s.click.aliexpress.com/e/_EHCoil2  
 
 ---
