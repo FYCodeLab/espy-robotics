@@ -3,9 +3,8 @@
 [![Vibe Robotics Banner](assets/2CD7A63C-BB6D-41F6-942D-FF5C105FF0B5.png)](links-mf2026.md)
 
 Retrouvez ci-dessous les cartes présentées au stand avec un lien pour voir et acheter les produit presentes en demonstration.
-N'hesitez pas a nous ecrire /
-[![Vibe Robotics](https://img.shields.io/badge/electronics-contact-blue?style=for-the-badge&logo=arduino)](mailto:votre@email.com?subject=contact%20et%20question)
-
+ pas à nous ecrire  
+[![Vibe Robotics](https://img.shields.io/badge/robotics-contact-blue?style=for-the-badge&logo=ros)](mailto:votre@email.com?subject=contact%20et%20question)
 ---
 
 ## 🔹 ESP32-C3 0.42-inch OLED
