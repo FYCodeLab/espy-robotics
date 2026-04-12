@@ -2,7 +2,7 @@
 
 [![Vibe Robotics Banner](assets/2CD7A63C-BB6D-41F6-942D-FF5C105FF0B5.png)](links-mf2026.md)
 
-### Retrouvez ci-dessous les cartes présentées au stand avec un lien pour voir et acheter les produit presentes en demonstration. N'hésitez pas à nous ecrire  
+Retrouvez ci-dessous les cartes présentées au stand avec un lien pour voir et acheter les produit presentes en demonstration. N'hésitez pas à nous ecrire  
 [![Email](https://img.shields.io/badge/robotics-contact-blue?style=for-the-badge&logo=ros)](mailto:votre@email.com?subject=contact%20et%20question)
 ---
 
