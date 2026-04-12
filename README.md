@@ -1,6 +1,6 @@
 # Vibe-Robotics
-> ### 🙌 Merci – Maker Faire 2026  Merci à toutes celles et ceux qui sont passés au stand **Vibe Robotics**  
-> lors de la **Maker Faire 2026** au *Musée des Arts et Métiers* le 11 avril !  
+> ### 🙌 Merci – Maker Faire 2026  
+> Merci à toutes celles et ceux qui sont passés au stand **Vibe Robotics** lors de la **Maker Faire 2026** au *Musée des Arts et Métiers* le 11 avril !  
 >  ---
 > [![Vibe Robotics Banner](assets/2CD7A63C-BB6D-41F6-942D-FF5C105FF0B5.png)](links-mf2026.md)
 > ---  
