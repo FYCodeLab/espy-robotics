@@ -4,7 +4,7 @@
 
 Retrouvez ci-dessous les cartes présentées au stand avec un lien pour voir et acheter les produit presentes en demonstration.
  pas à nous ecrire  
-[![Vibe Robotics](https://img.shields.io/badge/robotics-contact-blue?style=for-the-badge&logo=ros)](mailto:votre@email.com?subject=contact%20et%20question)
+[![Email](https://img.shields.io/badge/robotics-contact-blue?style=for-the-badge&logo=ros)](mailto:votre@email.com?subject=contact%20et%20question)
 ---
 
 ## 🔹 ESP32-C3 0.42-inch OLED
