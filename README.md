@@ -41,133 +41,88 @@ L’objectif est d’explorer, d’échanger et d’apprendre ensemble !
 
 ---
 
-## 🎧 Le kit decouverte "ESPY robotics"
-<p align="center">
-  <a href="https://github.com/FYCodeLab/espy-robotics">
-    <img src="assets/Espyimg.JPG" width="800">
-  </a>
-</p>
+# 🚀 Projets en cours
 
-[📧 Tenez moi au courant des kits EspY-Robotics](mailto:espy-robotics@protonmail.com?subject=Tenez%20moi%20au%20courant%20des%20kits%20EspY-Robotics&body=%5BMerci%20de%20me%20mettre%20au%20courant.%0ANous%20ne%20transmettrons%20pas%20votre%20adresse%20%C3%A0%20des%20tiers.%5D)
+Au-delà des démonstrations présentées à la Maker Faire, **Vibe Robotics** développe actuellement plusieurs projets ouverts mêlant électronique, microcontrôleurs, IA générative et expérimentation créative.
 
-# Guide d'utilisation de la carte ESPY
-
-## Étapes à suivre
-
-1. **Branchement**
-   - Branchez la carte **ESPY** (basée sur un microcontrôleur **ESP32**).
-   - Suivez les instructions incluses dans le kit.
-
-2. **Lancement de l'audioguide**
-   - Lancez l’audioguide pour obtenir des explications **pas à pas**.
-
-3. **Démonstrations**
-   Découvrez des démos de programmes :
-   - Allumer une **LED**
-   - Jouer un **son**
-   - Contrôler une **matrice lumineuse**
-   - Créer une **petite animation**
-
-4. **Installation et personnalisation**
-   - Installez, testez et modifiez vos programmes en utilisant :
-     - Les **exemples de code** fournis
-     - Le **guide papier** inclus
+L’objectif n’est pas seulement de construire des objets techniques, mais aussi de proposer une approche accessible, exploratoire et collaborative de la robotique et du prototypage.
 
 ---
 
-## 🚀 Objectifs 
+## 🔲 MicroMatrix
 
-- Découvrir les bases de l’**électronique** : LEDs, boutons, capteurs...  
-- Comprendre les bases de la **programmation** (CircuitPython).  
-- S’initier à la **robotique** par de petits projets interactifs.  
-- Développer l’esprit **pratique** et **créatif** grâce à des exemples courts.  
+[![MicroMatrix](https://img.shields.io/badge/Website-MicroMatrix-blue?style=for-the-badge)](https://fycodelab.github.io/micromatrix/)
+[![GitHub](https://img.shields.io/badge/GitHub-MicroMatrix-black?style=for-the-badge&logo=github)](https://github.com/FYCodeLab/micromatrix)
 
----
+**MicroMatrix** est un projet autour des matrices LED et des microcontrôleurs ESP32, conçu pour explorer des interfaces visuelles minimalistes, interactives et programmables.
 
-## 📂 Contenu du kit
+Le projet propose :
+- des animations LED simples et créatives  
+- des expériences interactives en CircuitPython  
+- des mini jeux et visualisations  
+- des interfaces éducatives pour apprendre la programmation embarquée  
+- des démonstrations artistiques et expérimentales  
 
-Chaque chapitre est composé de :  
-- Un **audio** d’explications  
-- Un extrait de **script Python**  
-- Une **démonstration** (ex. matrice LED...)  
+MicroMatrix sert également de plateforme d’apprentissage pour découvrir :
+- les matrices NeoPixel et MAX7219  
+- la programmation temps réel  
+- les contraintes matérielles des microcontrôleurs  
+- les interactions entre électronique, design et code généré avec l’aide des LLM  
 
----
-## 💡 Exemples de programmes
-
-Une fois l’ESPY branché et l’audioguide lancé, vous pouvez explorer une série de programmes déjà prêts à l’emploi.  
-Ils montrent progressivement les possibilités du microcontrôleur ESP32 et servent de base pour vos propres créations.
-
-- **Matrice LED** : animations colorées (arc-en-ciel, plasma, comète, étincelles, ondes, tourbillon) sur l’afficheur 8×8.  
-- **Dé électronique** : secouez la carte pour lancer un dé virtuel, avec une animation et un résultat aléatoire de 1 à 6.  
-- **Message défilant** : affichez un texte qui défile sur la matrice lumineuse, personnalisable en vitesse et couleur.  
-- **Jeux (Snake, Tetris, Pong)** : contrôlez de petits jeux classiques grâce à l’accéléromètre intégré.  
-- **Horloge** : connectée au Wi-Fi, elle affiche l’heure locale sur la matrice LED en alternant heures et minutes.  
-- **Station météo** : récupère en temps réel la température et l’état du ciel (soleil, pluie, orage) grâce à une API météo.
-
-Ces exemples sont conçus pour être :  
-- **visuels**, afin de comprendre immédiatement ce qui se passe,  
-- **simples à modifier**, pour que vous puissiez changer un paramètre (couleur, vitesse, texte…) et constater l’effet,  
-- **réutilisables**, comme point de départ pour vos propres projets (capteurs, robots, objets connectés…).
-
-👉 Les codes complets et prêts à télécharger se trouvent dans le dossier **exemples** :  
-[Exemples — FYCodeLab/espy-robotics](https://github.com/FYCodeLab/espy-robotics/tree/main/exemples)
-
+L’approche est volontairement progressive : commencer petit, expérimenter rapidement, puis améliorer et comprendre étape par étape.
 
 ---
 
-## 📦 Vous souhaitez obtenir un audioguide déjà monté ?
-ESPY-robotics promeut l’esprit open-source et encourage chacun à fabriquer lui-même ses systèmes. Les projets présentés s’appuient sur des composants accessibles, des logiciels libres et des documentations ouvertes. Néanmoins, si vous préférez découvrir l'électronique grâce à un kit déjà monté, nous pouvons vous aider.
-  <p>Contactez-nous et nous vous répondrons rapidement.</p>
-  <a class="btn"
-     href="mailto:espy-robotics@protonmail.com?subject=Demande%20d%E2%80%99informations%20%E2%80%94%20kit%20ESPy%20Robotics&body=Bonjour%2C%0A%0AJe%20souhaite%20des%20informations%20sur%20le%20kit%20ESPy%20Robotics%20(prix%2C%20disponibilit%C3%A9%2C%20contenu).%0A%0ANom%20%3A%20%0AOrganisation%20%3A%20%0ABesoins%20%3A%20%0A%0AMerci.">
-    ✉️ Nous contacter par e-mail
-  </a>
+## 🤖 pinGPT
 
-<p align="center">
-  <a href="https://github.com/FYCodeLab/espy-robotics">
-    <img src="https://raw.githubusercontent.com/FYCodeLab/espy-robotics/main/assets/espy%20kits.jpg" width="800">
-  </a>
-</p>
+[![Website](https://img.shields.io/badge/Website-pinGPT-blue?style=for-the-badge)](https://pingpt.lovable.app/)
+[![GitHub](https://img.shields.io/badge/GitHub-pinGPT-black?style=for-the-badge&logo=github)](https://github.com/FYCodeLab/pinGPT)
 
+**pinGPT** explore les interactions entre les grands modèles de langage (LLM) et les systèmes électroniques embarqués.
 
+Le projet vise à simplifier l’accès au prototypage électronique assisté par IA en proposant :
+- des interfaces de génération de code  
+- des assistants pour projets ESP32  
+- des expériences de « vibe coding » appliquées au hardware  
+- des outils pédagogiques pour débutants et makers  
 
+L’idée est d’utiliser les LLM comme partenaires de prototypage :
+- pour générer rapidement des idées  
+- tester des concepts  
+- apprendre plus facilement  
+- documenter les projets  
+- réduire les barrières techniques initiales  
 
-
-
-- **Kit de démarrage ESPY-Audioguide** : puce ESP32 et démos intégrées  
-- *(À venir)* **Kit sonore** : inclut un micro et un haut parleur pour parler et faire parler Espy
-- *(À venir)* **Kit écran** : ajoutez un écran LCD pour afficher vos propres messages et visuels  
-- *(À venir)* **Kit détecteurs** : mesurez la lumière, les sons ou la température  
-
----
-
-## 🔧 Matériel nécessaire
-
-- Le matériel est fourni, il est basé sur une carte **ESP32**, un microcontrôleur extrêmement performant 
-- Pour visualiser les démos : un téléphone, ordinateur ou tablette  
-- Pour modifier les programmes : un ordinateur (PC ou Mac)  
+pinGPT s’inscrit dans la philosophie **Vibe Robotics** :
+> expérimenter rapidement, apprendre progressivement, partager ouvertement.
 
 ---
 
-## ℹ️ À propos d'espy-robotics 
+# 🌍 Philosophie du projet
 
-**espy-robotics** est une initiative **personnelle et bénévole**, réalisée sur du temps libre.  
-Pour cette raison, les kits fournis n'ont pas la patine professionnelle que l’on pourrait attendre d’un produit commercial.  
+Vibe Robotics est avant tout une communauté ouverte autour :
+- du prototypage rapide  
+- des microcontrôleurs  
+- de l’apprentissage assisté par IA  
+- du DIY électronique  
+- de la robotique accessible  
+- de l’expérimentation créative  
 
-Le matériel fourni peut parfois ne pas correspondre exactement à vos attentes, ou bien ne pas fonctionner comme attendu malgré nos tests !  
-Dans ce cas, nous sommes présents ! N’hésitez pas à nous écrire pour toute **suggestion** ou **réclamation** :  
-📬 **espy-robotics@protonmail.com**
+Nous croyons que les outils modernes comme les LLM peuvent rendre la robotique et l’électronique beaucoup plus accessibles aux débutants, étudiants, artistes, makers et curieux.
+
+Mais nous pensons également que :
+- comprendre les systèmes reste essentiel  
+- l’expérimentation réelle compte  
+- le matériel impose des contraintes importantes  
+- et que l’apprentissage collectif reste irremplaçable.
 
 ---
 
-## 📜 Licence
+## 🔗 Liens utiles
 
-Ce projet est partagé dans un esprit **d’éducation ouverte**.  
-Libre à vous de nous proposer des modifications ou suggestions d’amélioration !  
+- 🌐 Site principal : https://github.com/FYCodeLab/espy-robotics/
+- 🔲 MicroMatrix : https://fycodelab.github.io/micromatrix/
+- 🤖 pinGPT : https://pingpt.lovable.app/
+- 💻 GitHub FYCodeLab : https://github.com/FYCodeLab
 
 ---
-
-## 🌟 À retenir
-
-ESPY-robotics n’est pas seulement un projet technique.  
-C’est une **porte d’entrée vers l’électronique et la robotique**, conçue pour les **curieux**, les **débutants** et tous ceux qui veulent **apprendre en s’amusant**.  
