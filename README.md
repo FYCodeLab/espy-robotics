@@ -146,8 +146,8 @@ Mais nous pensons également que :
     <td style="padding-right:20px; vertical-align:middle;">
 
  <h2>💡 Le microcontrôleur ESP32 : idéal pour débutants</h2>
-      <b>Bienvenue à <i>Vibe-Robotics</i></b>, un projet conçu pour vous familiariser avec l’électronique et la robotique à travers des exemples concrets et des démos interactives.
-ESPY-robotics soutient et promeut l’esprit <b>« Vibe Robotics »</b> : une approche progressive, accessible et expérimentale de la robotique   
+      <b> <i>Vibe-Robotics</i></b> est conçu pour se familiariser avec l’électronique et la robotique à travers des exemples concrets et des démos interactives.
+Vibe-robotics soutient et promeut une approche progressive, accessible et expérimentale de la robotique   
 L’idée est de partir de projets simples, de tester rapidement, puis de prendre le temps de comprendre ce qui fonctionne, pourquoi, et comment aller plus loin.
 <br><br>
 
