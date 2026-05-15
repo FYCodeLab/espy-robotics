@@ -48,28 +48,45 @@ Au-delà des démonstrations présentées à la Maker Faire, **Vibe Robotics** d
 L’objectif n’est pas seulement de construire des objets techniques, mais aussi de proposer une approche accessible, exploratoire et collaborative de la robotique et du prototypage.
 
 ---
-
 ## 🔲 MicroMatrix
 
 [![MicroMatrix](https://img.shields.io/badge/Website-MicroMatrix-blue?style=for-the-badge)](https://fycodelab.github.io/micromatrix/)
 [![GitHub](https://img.shields.io/badge/GitHub-MicroMatrix-black?style=for-the-badge&logo=github)](https://github.com/FYCodeLab/micromatrix)
 
-**MicroMatrix** est un projet autour des matrices LED et des microcontrôleurs ESP32, conçu pour explorer des interfaces visuelles minimalistes, interactives et programmables.
+**MicroMatrix** est un petit laboratoire d’initiation basé sur un microcontrôleur ESP32 et une matrice LED 8×8.  
+Son objectif est simple : aider les débutants à découvrir l’électronique, la programmation et la robotique sans être immédiatement assommés par des schémas qui ressemblent à des cartes au trésor dessinées par un poulpe.
 
-Le projet propose :
-- des animations LED simples et créatives  
-- des expériences interactives en CircuitPython  
-- des mini jeux et visualisations  
-- des interfaces éducatives pour apprendre la programmation embarquée  
-- des démonstrations artistiques et expérimentales  
+MicroMatrix fait partie de la collection **Vibe Robotics**, une série d’outils pédagogiques conçus pour apprendre en manipulant, en testant, en se trompant un peu, puis en recommençant plus intelligemment.  
+Bref : la méthode scientifique, mais avec des LEDs qui clignotent.
 
-MicroMatrix sert également de plateforme d’apprentissage pour découvrir :
-- les matrices NeoPixel et MAX7219  
-- la programmation temps réel  
-- les contraintes matérielles des microcontrôleurs  
-- les interactions entre électronique, design et code généré avec l’aide des LLM  
+Le kit contient notamment :
+- un ESP32 programmable en CircuitPython  
+- une matrice LED 8×8 interactive  
+- un mini audioguide intégré  
+- des démonstrations visuelles simples  
+- des expériences progressives pour découvrir ce qu’un microcontrôleur peut réellement faire  
 
-L’approche est volontairement progressive : commencer petit, expérimenter rapidement, puis améliorer et comprendre étape par étape.
+L’objectif n’est pas seulement d’exécuter du code, mais de comprendre progressivement :
+- comment un microcontrôleur interagit avec le monde physique  
+- comment afficher des animations et créer des interactions  
+- comment connecter électronique, programmation et créativité  
+- et comment utiliser les LLM comme assistants d’apprentissage et de prototypage  
+
+MicroMatrix a été pensé pour être :
+- accessible aux débutants  
+- rapide à prendre en main  
+- modifiable facilement  
+- amusant à explorer  
+- et suffisamment ouvert pour évoluer vers des projets plus avancés  
+
+📧 **Tenez-moi au courant des kits MicroMatrix**  
+[![Email](https://img.shields.io/badge/MicroMatrix-contact-blue?style=for-the-badge&logo=maildotru)](mailto:votre@email.com?subject=MicroMatrix)
+
+📖 **Guide d’utilisation**  
+➡️ https://fycodelab.github.io/micromatrix/
+
+
+
 
 ---
 
