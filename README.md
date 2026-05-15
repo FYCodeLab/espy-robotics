@@ -89,29 +89,54 @@ MicroMatrix a été pensé pour être :
 
 
 ---
-
 ## 🤖 pinGPT
 
 [![Website](https://img.shields.io/badge/Website-pinGPT-blue?style=for-the-badge)](https://pingpt.lovable.app/)
 [![GitHub](https://img.shields.io/badge/GitHub-pinGPT-black?style=for-the-badge&logo=github)](https://github.com/FYCodeLab/pinGPT)
 
-**pinGPT** explore les interactions entre les grands modèles de langage (LLM) et les systèmes électroniques embarqués.
+**pinGPT** est une plateforme de prototypage électronique pensée pour les débutants.  
+Le projet combine :
+- une carte ESP32 spécialement conçue pour l’expérimentation  
+- un petit écran intégré  
+- l’utilisation de CircuitPython  
+- et un guide interactif assisté par LLM permettant d’accompagner l’utilisateur étape par étape  
 
-Le projet vise à simplifier l’accès au prototypage électronique assisté par IA en proposant :
-- des interfaces de génération de code  
-- des assistants pour projets ESP32  
-- des expériences de « vibe coding » appliquées au hardware  
-- des outils pédagogiques pour débutants et makers  
+L’objectif est de rendre l’électronique programmable plus accessible, plus interactive et moins intimidante pour les personnes qui débutent.
 
-L’idée est d’utiliser les LLM comme partenaires de prototypage :
-- pour générer rapidement des idées  
-- tester des concepts  
-- apprendre plus facilement  
-- documenter les projets  
-- réduire les barrières techniques initiales  
+L’utilisateur peut connecter progressivement différents composants électroniques :
+- LEDs  
+- matrices LED  
+- écrans  
+- capteurs de température  
+- servomoteurs  
+- capteurs de distance  
+- modules I2C  
+- boutons  
+- buzzers  
+- et de nombreux autres modules compatibles ESP32  
 
-pinGPT s’inscrit dans la philosophie **Vibe Robotics** :
-> expérimenter rapidement, apprendre progressivement, partager ouvertement.
+Puis suivre les instructions et expériences proposées sur le site :
+👉 https://pingpt.lovable.app/
+
+---
+
+### 🧠 Le concept
+
+pinGPT agit comme un assistant de prototypage.  
+Le système peut :
+- guider les débutants dans leurs branchements  
+- expliquer les concepts importants simplement  
+- aider à comprendre le code CircuitPython  
+- répondre aux questions techniques  
+- proposer des idées d’expériences  
+- et accompagner progressivement l’utilisateur dans sa découverte des microcontrôleurs  
+
+L’idée n’est pas de remplacer l’apprentissage, mais de rendre les premières étapes plus accessibles et moins frustrantes.
+
+pinGPT fait partie de l’écosystème **Vibe Robotics** :
+> apprendre en expérimentant, comprendre en construisant, progresser en partageant.
+
+---
 
 ---
 
